@@ -3,20 +3,23 @@ import SinglePost from "./SinglePost";
 import "./App.css";
 
 const UserPosts = (props) => {
-  const [posts, setPosts] = useState(null);
   const [userPosts, setUserPosts] = useState(null);
   const [postsVisibility, setPostsVisibility] = useState(false);
   const getUsersPosts = async () => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((response) => response.json())
-      .then((data) => setPosts(data));
+    let url = "https://jsonplaceholder.typicode.com/posts";
+    try {
+      let result = await fetch(url);
+      return await result.json();
+    } catch (error) {
+      console.log(error);
+    }
   }
   const togglePosts = async (id) => {
     userPosts ?? getUserPostsById(id);
     setPostsVisibility(!postsVisibility);
   };
   const getUserPostsById = async (id) => {
-    posts ?? await getUsersPosts();
+    let posts =  await getUsersPosts();
     setUserPosts(
       posts
         ?.filter(({ userId }) => userId === id)
