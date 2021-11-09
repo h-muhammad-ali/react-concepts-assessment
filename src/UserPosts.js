@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import SinglePost from "./SinglePost";
-import './App.css';
+import "./App.css";
 
 const UserPosts = (props) => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const [userPosts, setUserPosts] = useState(null);
   const [postsVisibility, setPostsVisibility] = useState(false);
-  useEffect(() => {
+  const getUsersPosts = async () => {
     fetch("https://jsonplaceholder.typicode.com/posts")
       .then((response) => response.json())
       .then((data) => setPosts(data));
-  }, []);
+  }
   const togglePosts = async (id) => {
     userPosts ?? getUserPostsById(id);
-    postsVisibility?setPostsVisibility(false):setPostsVisibility(true);
+    setPostsVisibility(!postsVisibility);
   };
   const getUserPostsById = async (id) => {
+    posts ?? await getUsersPosts();
     setUserPosts(
       posts
-        .filter(({ userId }) => userId === id)
+        ?.filter(({ userId }) => userId === id)
         .map(({ userId, id, title, body }) => (
           <SinglePost
             key={id}
@@ -30,23 +31,26 @@ const UserPosts = (props) => {
         ))
     );
   };
+  const styles = {
+    marginLeft: "auto",
+    marginRight: "auto",
+    display: "block",
+    width: "50%",
+  };
   return (
     <div>
       <button
-        style={{
-          marginLeft: "auto",
-          marginRight: "auto",
-          display: "block",
-          width: "50%",
-        }}
+        style={styles}
         className="users"
-        onClick={() => togglePosts(props.userId)}
+        onClick={() => togglePosts(props?.userId)}
       >
-        {props.userName}
+        {props?.userName}
       </button>
-      {postsVisibility?<div id={`user${props.userId}`}>{userPosts}</div>:null}
+      {postsVisibility ? (
+        <div id={`user${props?.userId}`}>{userPosts}</div>
+      ) : null}
     </div>
   );
-}
+};
 
 export default UserPosts;
