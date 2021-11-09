@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import Comments from "./Comments";
+import UserPosts from "./UserPosts";
 import './App.css';
 
-export default function Body() {
+const Body = () => {
   const [users, setUsers] = useState([]);
   const [userButtons, setUserButtons] = useState(null);
   useEffect(() => {
@@ -11,10 +11,10 @@ export default function Body() {
       .then((response) => response.json())
       .then((data) => setUsers(data));
   }, []);
-  const displayUsers = async () => {
+  const handleClick = async () => {
     setUserButtons(
       users.map(({ name, id }) => (
-        <Comments key={id} userName={name} userId={id} />
+        <UserPosts key={id} userName={name} userId={id} />
       ))
     );
   };
@@ -22,7 +22,7 @@ export default function Body() {
     <div>
       <div className="container">
         {userButtons ?? (
-          <button id="mainButton" onClick={displayUsers}>
+          <button id="mainButton" onClick={handleClick}>
             Get Users List
           </button>
         )}
@@ -30,3 +30,5 @@ export default function Body() {
     </div>
   );
 }
+
+export default Body;

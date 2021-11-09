@@ -1,7 +1,7 @@
 import React from "react";
 import './App.css';
 
-export default function (props) {
+const SinglePost = (props) => {
   return (
       <div
         style={{
@@ -21,3 +21,5 @@ export default function (props) {
       </div>
   );
 }
+
+export default SinglePost;

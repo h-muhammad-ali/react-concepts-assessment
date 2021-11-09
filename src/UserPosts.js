@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import SingleComment from "./SingleComment";
-import $ from 'jquery';
+import SinglePost from "./SinglePost";
 import './App.css';
 
-export default function Comments(props) {
+const UserPosts = (props) => {
   const [posts, setPosts] = useState([]);
   const [userPosts, setUserPosts] = useState(null);
   const [postsVisibility, setPostsVisibility] = useState(false);
@@ -21,7 +20,7 @@ export default function Comments(props) {
       posts
         .filter(({ userId }) => userId === id)
         .map(({ userId, id, title, body }) => (
-          <SingleComment
+          <SinglePost
             key={id}
             postId={id}
             postUserId={userId}
@@ -49,3 +48,5 @@ export default function Comments(props) {
     </div>
   );
 }
+
+export default UserPosts;
